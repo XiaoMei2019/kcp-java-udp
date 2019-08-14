@@ -1,2 +1,0 @@
-# kcp-java-udp
- 
