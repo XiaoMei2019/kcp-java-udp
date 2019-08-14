@@ -9,7 +9,7 @@
 // + Lightweight, distributed as a single source file.
 //
 //=====================================================================
-package com;
+package com.KCPM;
 
 import java.util.ArrayList;
 
@@ -184,12 +184,12 @@ public abstract class KCP {
 	long mtu = IKCP_MTU_DEF;
 	long mss = this.mtu - IKCP_OVERHEAD;
 	byte[] buffer = new byte[(int) (mtu + IKCP_OVERHEAD) * 3];
-	ArrayList<Segment> nrcv_buf = new ArrayList<>(2048);
-	ArrayList<Segment> nsnd_buf = new ArrayList<>(2048);
-	ArrayList<Segment> nrcv_que = new ArrayList<>(2048);
-	ArrayList<Segment> nsnd_que = new ArrayList<>(2048);
+	ArrayList<Segment> nrcv_buf = new ArrayList<>(128);
+	ArrayList<Segment> nsnd_buf = new ArrayList<>(128);
+	ArrayList<Segment> nrcv_que = new ArrayList<>(128);
+	ArrayList<Segment> nsnd_que = new ArrayList<>(128);
 	long state = 0;
-	ArrayList<Long> acklist = new ArrayList<>(2048);
+	ArrayList<Long> acklist = new ArrayList<>(128);
 	// long ackblock = 0;
 	// long ackcount = 0;
 	long rx_srtt = 0;

@@ -63,7 +63,7 @@ public class KcpClient extends KCP implements Runnable {
 			this.rcv_byte_que.add(bytes);// 放入缓冲队列
 			this.needUpdate = true;
 			this.lastTime = System.currentTimeMillis(); // 接收数据（ACK或者真正的数据或者其他数据）的时候，获得系统时间作为最后时间，用于超时检查时间
-			System.out.println("数据接受队列大小" + rcv_byte_que.size());
+			// System.out.println("数据接受队列大小" + rcv_byte_que.size());
 		} catch (Exception e) {
 			// System.out.println("超时未获得数据");
 			e.printStackTrace();
@@ -85,14 +85,9 @@ public class KcpClient extends KCP implements Runnable {
 
 		// 启动这个线程
 		Thread t = new Thread(this);
-		try {
-			t.sleep(1000);
-			t.setName("kcp client thread start");
-			t.start();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		t.setName("kcp client thread start");
+		t.start();
 
 	}
 

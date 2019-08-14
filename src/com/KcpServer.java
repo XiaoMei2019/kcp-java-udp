@@ -43,7 +43,7 @@ public class KcpServer extends KCP implements Runnable {
 	// udp发送数据
 	@Override
 	protected void output(byte[] buffer, int size) {
-		datagramPacket = new DatagramPacket(buffer, size, datagramPacket.getAddress(), datagramPacket.getPort());
+		datagramPacket = new DatagramPacket(buffer, size, remote);
 		try {
 			datagramSocket.send(datagramPacket);
 		} catch (IOException e) {
@@ -61,6 +61,12 @@ public class KcpServer extends KCP implements Runnable {
 			// System.out.println("接收队列大小" + rcv_byte_que.size());
 			// System.out.println("发送队列大小" + send_byte_que.size());
 			datagramSocket.receive(datagramPacket);
+			if (firstReceive) {
+				inetAddress = datagramPacket.getAddress();
+				port = datagramPacket.getPort();
+				remote = new InetSocketAddress(inetAddress, port);
+				firstReceive = false;
+			}
 			byte[] bytes = Arrays.copyOf(receMsgs, datagramPacket.getLength());
 			// System.out.println("2 byte数据大小" + datagramPacket.getLength());
 			this.rcv_byte_que.add(bytes);// 放入缓冲队列
@@ -156,6 +162,7 @@ public class KcpServer extends KCP implements Runnable {
 					int result = kcp.Input(buffer);
 					// 返回0表示正常
 					if (result != 0) {
+						System.out.println(result);
 						System.out.println("Input异常");
 						running = false;
 						return;
@@ -171,7 +178,7 @@ public class KcpServer extends KCP implements Runnable {
 					if (dataLength > 0) {
 						// 输出数据
 						System.out.println(new String(receiveByte, 0, dataLength));
-						// this.send(receiveByte);
+						this.send(receiveByte);
 					}
 				}
 				// 3 Send
@@ -202,7 +209,7 @@ public class KcpServer extends KCP implements Runnable {
 					synchronized (waitLock) {
 						try {
 							// System.out.println("等待开始");
-							waitLock.wait(this.interval - end + start);
+							waitLock.wait(interval - end + start);
 							// System.out.println("等待结束");
 						} catch (InterruptedException ex) {
 							ex.printStackTrace();
