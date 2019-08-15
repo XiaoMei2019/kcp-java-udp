@@ -45,10 +45,10 @@ public class ClientTest extends KcpClient {
 		byte[] buffer32 = new byte[8192 * 4];
 		Arrays.fill(buffer32, 0, 8192 * 4 - 2, (byte) 'F');
 		Arrays.fill(buffer32, 8192 * 4 - 1, 8192 * 4, (byte) '!');
-		int i = 12;
+		int i = 200;
 		while (i > 0) {
-			kcpClient.send(buffer8);
-			Thread.sleep(100);
+			kcpClient.send(buffer2);
+			Thread.sleep(200);
 			i--;
 		}
 //		while (true) {
